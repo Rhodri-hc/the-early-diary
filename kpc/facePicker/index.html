@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>facePicker</title>
+    <style>
+        .face-container{
+            width: 350px;
+            height: 250px;
+            overflow-y: scroll;
+            background: #fff;
+            float: left;
+        }
+        .face-content{
+            display: inline-block;
+            width: 52px;
+        }
+        .face-content:hover {
+            
+        }
+        .face-content:hover >img {
+            transform: translateY(-3px);
+            transition: all 0.3s;
+            background-color: #f7f3f3;
+        }
+        .face-item{
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <div id="face-box" class="face-container"></div>
+    <script src="./index.js"></script>
+    <script type="text/javascript">
+        var html = "";
+        for (let index = 0; index <= 194; index++) {
+            html += '<div onmouseenter="faceMouseenter(this)" onmouseleave="faceMouseleave(this)" class="face-content"> <img src="' + './face/' + index + '.png" class="face-item" id="' + index + '" /> </div>' 
+        }
+        document.getElementById("face-box").innerHTML = html
+
+        window.onload = function(){
+           for (let i = 0; i < 194; i++) {
+               document.getElementById(`${i}`).stop()
+           }
+        };
+
+        /**
+        * @desc 表情鼠标移入
+        * @author 张和潮
+        * @date 2021年09月25日 14:59:22
+        */
+        function faceMouseenter(e){
+            e.children[0].play();
+        };
+        /**
+        * @desc 表情鼠标离开
+        * @author 张和潮
+        * @date 2021年09月25日 14:59:49
+        */
+        function faceMouseleave(e){
+            e.children[0].stop();
+        };
+    </script>
+</body>
+</html>
