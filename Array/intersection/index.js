@@ -37,13 +37,8 @@ function intersection(nums1, nums2){
         }
     })
 
+    // 假如要求有序的
+    // resultArray.sort()
+
     return resultArray;
 }
-
-/**
-* @desc 题目进阶
-* @desc 假如两个数组都是有序的
-* @author 张和潮
-* @date 2021年10月16日 14:48:26
-*/
-
