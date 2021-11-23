@@ -107,3 +107,58 @@ MyPromise.prototype.then = function(onResolved, onRejected) {
         onRejected(this.value);
     }
 }
+
+/**
+* @desc 手写Promise.then
+* @author 张和潮
+* @date 2021年11月23日 21:56
+*/
+/**
+ * then 方法返回一个新的 promise 实例，为了在 promise 状态
+ * 发生变化时（resolve/ reject被调用时）在执行 then 里的函数，
+ * 我们使用一个 callbacks 数组先把传给 then 的函数暂存起来，等状态
+ * 改变时再调用。
+ */
+then(onFulfilled, onReject){
+    // 保存前一个promise 的 this
+    const self = this;
+    return new MyPromise((resolve, reject)=> {
+        // 封装前一个promise成功时执行的函数
+        let fulfilled = () => {
+            try {
+                // 承前
+                const result = onFulfilled(self.value);
+                // 启后
+                return result instanceof MyPromise ? result.then(resolve, reject) : resolve(result);
+            } catch (error) {
+                reject(error)
+            }
+        }
+
+        // 封装前一个Promise 失败时执行的函数
+        let rejected = () =>{
+            try {
+                const result = onReject(self.reason);
+                return result instanceof MyPromise ? result.then(resolve, reject) : reject(result)
+            } catch (error) {
+                reject(error);
+            }
+        } 
+
+        // 状态判断
+        switch (self.status) {
+            case PENDING:
+                self.resolvedCallbacks.push(fulfilled);
+                self.rejectedCallbacks.push(rejected);
+                break;
+        
+            case RESOLVED: 
+                fulfilled();
+                break;
+            
+            case REJECTED: 
+                rejected();
+                break;
+        }
+    })
+}
